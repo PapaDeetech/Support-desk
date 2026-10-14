@@ -109,7 +109,7 @@ function AdminUsers() {
 
             <div className="admin-page-heading">
                 <div>
-                    <h1 className="admin-eyebrow">ADMINISTRATION</h1>
+                    <h1 className="admin-eyebrow">ADMIN</h1>
                     <h2>Manage Users</h2>
                     <p className="admin-subtitle">
                         View and search all registered accounts.

@@ -7,7 +7,7 @@ function AdminDashboard() {
             <BackButton url="/" />
 
             <h1>Dashboard</h1>
-            <p>Welcome to the administration panel.</p>
+            <p>Welcome to the admin panel.</p>
 
             <div className="admin-dashboard-cards">
                 <div className="admin-card">

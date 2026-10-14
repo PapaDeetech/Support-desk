@@ -210,7 +210,7 @@ function AdminTickets() {
 
             <div className="admin-page-heading">
                 <div>
-                    <h1 className="admin-eyebrow">ADMINISTRATION</h1>
+                    <h1 className="admin-eyebrow">ADMIN</h1>
                     <h2>Manage Tickets</h2>
                     <p className="admin-subtitle">
                         Review, edit, and remove tickets across the support desk.

@@ -41,9 +41,14 @@ function AdminTickets() {
                 setError('');
 
                 const data = await adminService.getTickets(user.token);
-                const list = Array.isArray(data) ? data : data.tickets;
+                // Debug: check what the backend returns
+                console.log('Admin tickets API response:', data);
+                console.log('Is response an array?', Array.isArray(data));
 
-                if (!Array.isArray(list)) {
+                const list = Array.isArray(data) ? data : Array.isArray(data?.tickets) ? data.tickets : null;
+
+                if (!(list)) {
+                    console.error('Unexpected tickets response:', data);
                     throw new Error('The server returned an unexpected tickets response.');
                 }
 
@@ -389,7 +394,7 @@ function AdminTickets() {
                                                             type="button"
                                                             className="admin-button admin-button-primary"
                                                             onClick={() => startEditing(ticket)}
-                                                            disabled = {saving}
+                                                            disabled={saving}
                                                         >
                                                             Edit
                                                         </button>
@@ -398,7 +403,7 @@ function AdminTickets() {
                                                             type="button"
                                                             className="admin-button admin-button-danger"
                                                             onClick={() => handleDelete(ticket._id)}
-                                                            disabled = {saving || deletingId !== null}
+                                                            disabled={saving || deletingId !== null}
                                                         >
                                                             {deletingId === ticket._id ? 'deleting...' : 'Delete'}
                                                         </button>

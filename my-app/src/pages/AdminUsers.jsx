@@ -33,10 +33,13 @@ function AdminUsers() {
             try {
                 const data = await adminService.getUsers(user.token);
 
+                // console.log('Admin users API response:', data);
+                
                 // Supports either an array or { users: [...] }
-                const userList = Array.isArray(data) ? data : data.users;
+                const userList = Array.isArray(data) ? data : Array.isArray (data?.users) ? data.users : null;
 
-                if (!Array.isArray(userList)) {
+                if (!userList) {
+                    console.error('Unexpected users response:', data);
                     throw new Error('Unexpected response from the server.');
                 }
 

@@ -6,7 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Header from './pages/components/Header';
 import Home from './pages/Home'
 import Login from './pages/Login'
-import Register from './pages/register.jsx'
+import Register from './pages/register'
 import NewTicket from './pages/NewTicket';
 import { PrivateRoute } from './pages/components/PrivateRoute';
 import Tickets from './pages/Tickets';

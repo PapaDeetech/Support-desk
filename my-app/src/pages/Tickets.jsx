@@ -8,7 +8,7 @@ import TicketItem from './components/Ticketitem'
 
 const Tickets = () => {
     const {tickets, isLoading, isSuccess, isError, message} = useSelector((state) => state.tickets)
-
+    const safeTickets = Array.isArray(tickets) ? tickets : [];
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -39,7 +39,7 @@ const Tickets = () => {
             <div></div>
         </div>
     {
-        tickets.map((ticket) => (
+        safeTickets.map((ticket) => (
             <TicketItem key={ticket._id} ticket={ticket} />
         ))
     }

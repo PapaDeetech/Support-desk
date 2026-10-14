@@ -1,7 +1,7 @@
 
 import axios from 'axios';
 
-const API_URL = '/api/admin/';
+const API_URL = 'https://support-desk-lh08.onrender.com/api/admin/';
 
 const getConfig = (token) => ({
   headers: {

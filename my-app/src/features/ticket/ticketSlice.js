@@ -153,7 +153,7 @@ export const ticketsSlice = createSlice({
       .addCase(getTickets.fulfilled, (state, action) => {
         state.isLoading = false
         state.isSuccess = true
-        state.tickets = action.payload
+        state.tickets = Array.isArray(action.payload) ? action.payload : []
       })
       .addCase(getTickets.rejected, (state, action) => {
         state.isLoading = false
@@ -164,10 +164,10 @@ export const ticketsSlice = createSlice({
       .addCase(getTicket.pending, state => {
         state.isLoading = true
       })
-      .addCase(getTickets.fulfilled, (state, action) => {
+      .addCase(getTicket.fulfilled, (state, action) => {
         state.isLoading = false
         state.isSuccess = true
-        state.tickets = Array.isArray(action.payload) ? action.payload : []
+        state.ticket = action.payload
       })
       .addCase(getTicket.rejected, (state, action) => {
         state.isLoading = false

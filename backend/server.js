@@ -11,7 +11,7 @@ const app = express();
 
 
 app.use(cors({
-    origin: 'https://support-desk-pi-five.vercel.app',
+    origin: 'https://support-desk-git-main-papa-dee-tech.vercel.app',
     
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     credentials: true

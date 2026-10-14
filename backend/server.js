@@ -8,10 +8,18 @@ const cors = require('cors');
 
 const app = express();
 
+const cors = require('cors');
+
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://support-desk-pi-five.vercel.app',
+  'https://support-desk-git-main-papa-dee-tech.vercel.app'
+];
+
 app.use(cors({
-    origin: 'https://support-desk-pi-five.vercel.app',
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    credentials: true
+  origin: allowedOrigins,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  credentials: true
 }));
 
 // Connect to database

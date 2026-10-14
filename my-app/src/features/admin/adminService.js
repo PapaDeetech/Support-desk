@@ -1,7 +1,7 @@
 
 import axios from 'axios';
 
-const API_URL = '/api/admin/';
+const API_URL = 'https://support-desk-pi-five.vercel.app/api/admin/';
 
 const getConfig = (token) => ({
   headers: {

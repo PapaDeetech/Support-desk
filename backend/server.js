@@ -4,8 +4,16 @@ const colors = require('colors')
 const connectDB = require('./config/db')
 const PORT = process.env.PORT || 8000
 const{errorHandler} = require('./middleware/errorMiddleware')
+const cors = require('cors');
 
 const app = express();
+
+app.use(cors({
+    origin: 'https://support-desk-pi-five.vercel.app',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    credentials: true
+}));
+
 // Connect to database
 connectDB()
 
@@ -23,4 +31,5 @@ app.get('/', (req, res) => {
 // Routes
 app.use('/api/users', require('./routes/userRoutes'))
 app.use('/api/tickets', require('./routes/ticketRoutes'))
+app.use('/api/admin', require('./routes/adminRoutes'))
 app.use(errorHandler)

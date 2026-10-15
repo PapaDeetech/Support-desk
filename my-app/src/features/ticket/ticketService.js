@@ -58,7 +58,7 @@ const likeTicket = async (ticketId, token) => {
         }
     };
 
-    const response = await axios.put(API_URL + ticketId + '/like', {}, config);
+    const response = await axios.put(API_URL + ticketId + 'like', {}, config);
 
     return response.data;
 };

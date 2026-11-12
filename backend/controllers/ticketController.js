@@ -2,6 +2,29 @@ const asyncHandler = require("express-async-handler");
 
 const Ticket = require("../models/ticketModel");
 const User = require("../models/userModel");
+const cloudinary = require("../config/cloudinary");
+
+
+// Upload an image buffer to Cloudinary
+const uploadToCloudinary = (file) => {
+  return new Promise((resolve, reject) => {
+    const uploadStream = cloudinary.uploader.upload_stream(
+      {
+        folder: "support-desk/ticket-attachments",
+        resource_type: "image",
+      },
+      (error, result) => {
+        if (error) {
+          return reject(error);
+        }
+
+        resolve(result);
+      }
+    );
+
+    uploadStream.end(file.buffer);
+  });
+};
 
 // @desc Get user tickets
 // @route GET /api/tickets
@@ -200,34 +223,66 @@ const likeTicket = asyncHandler(async (req, res) => {
   res.status(201).json(ticket.review)
 })
 
-// @desc Create new ticket
+
+// @desc Create new ticket with optional image attachments
 // @route POST /api/tickets
 // @access Private
 const createTicket = asyncHandler(async (req, res) => {
   const { product, description } = req.body;
 
-  if (!product || !description){
-    res.status(400)
-    throw new Error('Please add a product and description')
+  if (!product || !description || !description.trim()) {
+    res.status(400);
+    throw new Error("Please add a product and description");
   }
 
-//   Get user using  JWT
-  const user = await User.findById(req.user.id)
+  // Get user using JWT
+  const user = await User.findById(req.user.id);
 
-  if (!user){
-    res.status(401)
-    throw new Error('User not found')
+  if (!user) {
+    res.status(401);
+    throw new Error("User not found");
   }
 
-  const ticket = await Ticket.create({
-    product,
-    description,
-    user: req.user.id,
-    status: 'new'
-  })
+  const files = req.files || [];
+  const uploadedImages = [];
 
-  res.status(200).json(ticket);
+  try {
+    // Upload selected images to Cloudinary
+    for (const file of files) {
+      const result = await uploadToCloudinary(file);
+
+      uploadedImages.push({
+        url: result.secure_url,
+        public_id: result.public_id,
+        originalName: file.originalname,
+      });
+    }
+
+    // Create ticket and save image details
+    const ticket = await Ticket.create({
+      product,
+      description: description.trim(),
+      user: req.user.id,
+      status: "new",
+      attachments: uploadedImages,
+    });
+
+    res.status(201).json(ticket);
+
+  } catch (error) {
+    // Clean up images if ticket creation or an upload fails
+    if (uploadedImages.length > 0) {
+      await Promise.allSettled(
+        uploadedImages.map((image) =>
+          cloudinary.uploader.destroy(image.public_id)
+        )
+      );
+    }
+
+    throw error;
+  }
 });
+
 
 module.exports = {
     getTickets,

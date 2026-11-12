@@ -1,17 +1,33 @@
-const express = require('express')
-const router = express.Router()
-const {getTickets, getTicket, createTicket, deleteTicket, updateTicket, likeTicket} = require('../controllers/ticketController')
-const {protect} = require('../middleware/authMiddleware')
+const express = require("express");
+const router = express.Router();
+const {
+  getTickets,
+  getTicket,
+  createTicket,
+  deleteTicket,
+  updateTicket,
+  likeTicket,
+} = require("../controllers/ticketController");
+const { protect } = require("../middleware/authMiddleware");
 
 // Re-route into note router
-const noteRouter = require('./noteRoutes')
-router.use('/:ticketId/notes', noteRouter)
-const {submitTicketReview} = require('../controllers/ticketController')
+const noteRouter = require("./noteRoutes");
+router.use("/:ticketId/notes", noteRouter);
+const { submitTicketReview } = require("../controllers/ticketController");
 
-router.route('/').get(protect, getTickets).post(protect, createTicket)
-router.route('/:id').get(protect, getTicket).delete(protect, deleteTicket).put(protect, updateTicket)
-router.route('/:id/like').put(protect, likeTicket)
+const upload = require("../middleware/uploadMiddleware");
 
-router.post('/:id/review', protect, submitTicketReview)
+router
+  .route("/")
+  .get(protect, getTickets)
+  .post(protect, upload.array("attachments", 3), createTicket);
+router
+  .route("/:id")
+  .get(protect, getTicket)
+  .delete(protect, deleteTicket)
+  .put(protect, updateTicket);
+router.route("/:id/like").put(protect, likeTicket);
 
-module.exports = router
+router.post("/:id/review", protect, submitTicketReview);
+
+module.exports = router;

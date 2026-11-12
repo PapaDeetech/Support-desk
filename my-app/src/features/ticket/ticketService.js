@@ -2,14 +2,29 @@ import axios from 'axios';
 
 const API_URL = import.meta.env.VITE_API_URL + "/api/tickets/" || "/api/tickets/";
 
+// Create a new ticket with optional image attachments
 const createTicket = async (ticketData, token) => {
+    const formData = new FormData();
+
+    formData.append('product', ticketData.product);
+    formData.append('description', ticketData.description);
+
+    // Add selected images
+    if (ticketData.attachments && ticketData.attachments.length > 0) {
+        ticketData.attachments.forEach((file) => {
+            formData.append('attachments', file);
+        });
+    }
+
     const config = {
         headers: {
             Authorization: `Bearer ${token}`
         }
     };
 
-    const response = await axios.post(API_URL, ticketData, config);
+    // Do not manually set Content-Type.
+    // Axios will automatically set multipart/form-data with its boundary.
+    const response = await axios.post(API_URL, formData, config);
 
     return response.data;
 };
@@ -64,20 +79,20 @@ const likeTicket = async (ticketId, token) => {
 };
 
 const submitTicketReview = async (ticketId, reviewData, token) => {
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  }
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    };
 
-  const response = await axios.post(
-    API_URL + `${ticketId}/review`,
-    reviewData,
-    config
-  )
+    const response = await axios.post(
+        API_URL + `${ticketId}/review`,
+        reviewData,
+        config
+    );
 
-  return response.data
-}
+    return response.data;
+};
 
 const ticketService = {
     createTicket,

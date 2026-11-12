@@ -11,11 +11,16 @@ const app = express();
 
 const cors = require('cors');
 
+
 const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:5174',
-  'https://support-desk-pi-five.vercel.app',
+
+  'https://support-desk-5vq7.vercel.app',
+  'https://support-desk-5vq7-git-main-papa-dee-tech.vercel.app',
+  'https://support-desk-5vq7-1hlwybvf5-papa-dee-tech.vercel.app',
 ];
+
 console.log("CORS CONFIGURATION LOADED");
 app.use(cors({
   origin: (origin, callback) => {
